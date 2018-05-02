@@ -110,15 +110,7 @@ BOOL CPlayWithMFCDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	CProgressCtrl *pProgCtrl = (CProgressCtrl *)GetDlgItem(IDC_TIME_PROG);
-	if (pProgCtrl)
-	{
-		pProgCtrl->SetRange(0, END_OF_PROG);
-		pProgCtrl->SetPos(0);
-        pProgCtrl->SetBarColor(COLORREF(0x000EC9FF));
-	}
-
-    SetDlgItemTextW(IDC_TEST_EDIT, L"¹®Á¦¸¦ ¸ÂÃçÁà >_<");
+    InitializeUI();
     ReadQnAFile();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -298,6 +290,19 @@ void CPlayWithMFCDlg::OnOptionClicked(int nOpt)
     ShowNextQuestion();
 }
 
+void CPlayWithMFCDlg::InitializeUI()
+{
+    CProgressCtrl *pProgCtrl = (CProgressCtrl *)GetDlgItem(IDC_TIME_PROG);
+    if (pProgCtrl)
+    {
+        pProgCtrl->SetRange(0, END_OF_PROG);
+        pProgCtrl->SetPos(0);
+        pProgCtrl->SetBarColor(COLORREF(0x000EC9FF));
+    }
+
+    SetDlgItemTextW(IDC_TEST_EDIT, L"¹®Á¦¸¦ ¸ÂÃçÁà >_<");
+}
+
 void CPlayWithMFCDlg::OnBnClickedAns1Btn()
 {
     OnOptionClicked(1);
@@ -319,16 +324,17 @@ void CPlayWithMFCDlg::FinishGame()
     if (!m_bGameProceeding)
         return;
 
-    ResetGame();
+    KillTimer(TIMER_EVT_GAME_PROG);
     AfxMessageBox(L"Game Finish!!");
 
+    InitializeGameData();
+    InitializeUI();
 }
 
-void CPlayWithMFCDlg::ResetGame()
+void CPlayWithMFCDlg::InitializeGameData()
 {
     m_bGameProceeding = false;
     m_currentQuest = -1;
-    KillTimer(TIMER_EVT_GAME_PROG);
 }
 
 void CPlayWithMFCDlg::OnBnClickedOk()

@@ -28,9 +28,12 @@ private:
 	int ReadQnAFile();
     void ShowNextQuestion();
     void FinishGame();
-    void ResetGame();
+
+    void InitializeGameData();
+    void InitializeUI();
     
     void OnOptionClicked(int nOpt);
+
 
 // Construction
 public:
